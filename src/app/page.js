@@ -1,9 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Board from './Component/Board';
-import dynamic from 'next/dynamic'
-
-const ComponentUsingLocalStorage = dynamic(() => import('../components/ComponentUsingLocalStorage'), { ssr: false })
 
 const TIME_LIMIT = 60; 
 
@@ -177,10 +174,7 @@ export default function Home() {
     const [board, setBoard] = useState(createInitialBoard());
     const [score, setScore] = useState(0); 
     const [gameOver, setGameOver] = useState(false);
-    const [topScores, setTopScores] = useState(() => {
-        const storedTopScores = localStorage.getItem('topScores');
-        return storedTopScores ? JSON.parse(storedTopScores) : [];
-    });
+    const [topScores, setTopScores] = useState([]);
     const [nameInput, setNameInput] = useState('');
     const [showInput, setShowInput] = useState(false);
 
@@ -287,6 +281,13 @@ export default function Home() {
 
         return () => clearInterval(timer);
     }, [isTimeAttack, timeLeft, gameOver]);
+
+    useEffect(() => {
+        const storedTopScores = localStorage.getItem('topScores');
+        if (storedTopScores) {
+            setTopScores(JSON.parse(storedTopScores));
+        }
+    }, []);
 
     return (
       <main className="game-container">
