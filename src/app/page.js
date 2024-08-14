@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import Board from './Component/Board';
+import dynamic from 'next/dynamic'
+
+const ComponentUsingLocalStorage = dynamic(() => import('../components/ComponentUsingLocalStorage'), { ssr: false })
 
 const TIME_LIMIT = 60; 
 
